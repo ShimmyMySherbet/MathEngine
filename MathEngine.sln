@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.32106.194
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MathEngine", "MathEngine\MathEngine.csproj", "{EEBBFCEF-E5CB-46A1-BF3F-2BCDFF827D43}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MathEngine.Test", "MathEngine.Test\MathEngine.Test.csproj", "{0A65E486-FFB5-41DE-A09E-8A580A02F5FF}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{EEBBFCEF-E5CB-46A1-BF3F-2BCDFF827D43}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EEBBFCEF-E5CB-46A1-BF3F-2BCDFF827D43}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EEBBFCEF-E5CB-46A1-BF3F-2BCDFF827D43}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EEBBFCEF-E5CB-46A1-BF3F-2BCDFF827D43}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0A65E486-FFB5-41DE-A09E-8A580A02F5FF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0A65E486-FFB5-41DE-A09E-8A580A02F5FF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0A65E486-FFB5-41DE-A09E-8A580A02F5FF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0A65E486-FFB5-41DE-A09E-8A580A02F5FF}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {90DEA55B-3EA9-4EF4-88FE-B4D274170484}
+	EndGlobalSection
+EndGlobal
