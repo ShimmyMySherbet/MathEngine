@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using MathEngine.Models.Exceptions;
 using MathEngine.Models.Interfaces;
 
 namespace MathEngine.Parsing.MathObjects
@@ -18,12 +14,12 @@ namespace MathEngine.Parsing.MathObjects
 
         public override string ToString()
         {
-            return $"?'{Value}'";
+            return $"{Value}";
         }
 
         public double Calculate()
         {
-            throw new NotImplementedException();
+            throw new BadEquationException($"Cannot calculate unresolved object wrapping {Value}");
         }
     }
 }

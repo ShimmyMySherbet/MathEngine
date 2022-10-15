@@ -11,5 +11,10 @@ namespace MathEngine.Parsing.MathObjects
         {
             Yields = yields;
         }
+
+        public override string ToString()
+        {
+            return $"[{string.Join(", ", Yields)}]";
+        }
     }
 }

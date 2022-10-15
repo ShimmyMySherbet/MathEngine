@@ -41,7 +41,9 @@ namespace MathEngine
         /// Parses and builds an equation. This can be used to calculate the equation, and also to provide a human-readable form of the built equation with ToString()
         /// </summary>
         /// <param name="equation">The equation in text format to build</param>
-        /// <returns>The built equation. Call <seealso cref="INumericalYield.Calculate"/> to calculate the result of the equation</returns>
+        /// <returns>The built equation. Call <seealso cref="INumericalYield.Calculate"/> to calculate the result of the equation,
+        /// or call <seealso cref="INumericalYield.ToString"/> for a structural view of the equation</returns>
+        /// <exception cref="Models.Exceptions.SyntaxException">Raised when a syntax error is detected in the equation</exception>
         public INumericalYield Build(string equation)
         {
             var tokens = Tokenizer.Tokenize(Context, equation);
@@ -54,6 +56,7 @@ namespace MathEngine
         /// </summary>
         /// <param name="equation">The equation in text form to calculate</param>
         /// <returns>The result of the equation</returns>
+        /// <exception cref="Models.Exceptions.SyntaxException">Raised when a syntax error is detected in the equation</exception>
         public double Calculate(string equation)
         {
             return Build(equation).Calculate();

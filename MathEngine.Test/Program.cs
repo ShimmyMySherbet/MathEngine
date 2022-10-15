@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
-using MathEngine.Models;
-using MathEngine.Parsing;
-using MathEngine.Tokenizing;
+using MathEngine.Models.Exceptions;
 
 namespace MathEngine.Test
 {
@@ -23,6 +21,7 @@ namespace MathEngine.Test
                     continue;
                 }
 
+                // Allow setting variables in equation
                 char setOut = '\0';
 
                 if (eq.IndexOf('=') != -1)
@@ -43,13 +42,11 @@ namespace MathEngine.Test
                     var built = engine.Build(eq);
                     sw.Stop();
 
-
                     Console.WriteLine();
                     Console.WriteLine($"Parsed Structure: {built}");
                     Console.WriteLine();
 
                     long buildTime = sw.ElapsedTicks;
-
 
                     sw.Restart();
                     var result = built.Calculate();
@@ -67,15 +64,16 @@ namespace MathEngine.Test
                     Console.WriteLine();
                     Console.WriteLine();
                 }
+                catch (SyntaxException syntax)
+                {
+                    Console.WriteLine($"Syntax Error: {syntax.Message}");
+                }
+#if RELEASE
                 catch (Exception ex)
                 {
-#if DEBUG
-                    throw;
-#else
                     Console.WriteLine($"{ex.GetType().Name}: {ex.Message}");
 
 #endif
-                }
             }
         }
     }

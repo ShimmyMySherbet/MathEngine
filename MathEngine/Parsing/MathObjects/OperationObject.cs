@@ -18,7 +18,7 @@ namespace MathEngine.Parsing.MathObjects
 
         public override string ToString()
         {
-            return $"{OperationType.Name}";
+            return $"{Symbol.Symbol}";
         }
     }
 }

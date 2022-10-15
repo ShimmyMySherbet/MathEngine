@@ -17,6 +17,7 @@ namespace MathEngine.Tokenizing
             var tokens = new List<ExpressionToken>();
             var currentText = "";
 
+            var lastWasSymbol = true;
             while (!content.EndOfStream)
             {
                 var c = content.ReadNext();
@@ -57,20 +58,28 @@ namespace MathEngine.Tokenizing
                         tokens.Add(new ExpressionToken(currentText));
                         currentText = "";
                     }
+                    lastWasSymbol = c == ',';
                 }
                 else if (RawNumerics.Contains(c))
                 {
                     currentText += c;
+                    lastWasSymbol = false;
                 }
                 else if (!Alphabet.Contains(c))
                 {
+                    if (lastWasSymbol && c == '-' && currentText == "" && RawNumerics.Contains(content.Peak()))
+                    {
+                        currentText = "-";
+                        continue;
+                    }
+
                     if (!string.IsNullOrWhiteSpace(currentText))
                     {
                         tokens.Add(new ExpressionToken(currentText));
                         currentText = "";
                     }
-
                     tokens.Add(new ExpressionToken(c.ToString()));
+                    lastWasSymbol = true;
                 }
                 else
                 {
@@ -109,6 +118,7 @@ namespace MathEngine.Tokenizing
                             tokens.Add(new ExpressionToken(c_.ToString()));
                         }
                     }
+                    lastWasSymbol = false;
                 }
             }
 

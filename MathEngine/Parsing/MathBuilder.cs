@@ -18,6 +18,8 @@ namespace MathEngine.Parsing
         /// <summary>
         /// Builds the calculatable equation from the provided parsed equation
         /// </summary>
+        /// <exception cref="BadEquationException">Raised when the method is given invalid data</exception>
+        /// <exception cref="SyntaxException">Raised when a syntax error is detected in the equation</exception>
         public INumericalYield Build(MathObject parsedEquation, MathContext context, bool funcParams = false)
         {
             var workingList = new List<INumericalYield>();
@@ -130,6 +132,14 @@ namespace MathEngine.Parsing
                     }
                 }
             }
+            
+            for (int i = 0; i < workingList.Count; i++)
+            {
+                if (workingList[i] is UnresolvedObject unresolved)
+                {
+                    throw new SyntaxException($"Syntax error in equation near {unresolved.Value}");
+                }
+            }
 
             if (funcParams)
             {
@@ -138,12 +148,14 @@ namespace MathEngine.Parsing
 
             if (workingList.Count > 1)
             {
-                throw new BadEquationException("Equation does not formulate into a single function");
+                throw new SyntaxException($"Equation does not formulate into a single function. Check the equation syntax. Invalid formula: [{string.Join(", ", workingList)}]");
             }
 
             return workingList[0];
         }
 
+        /// <exception cref="BadEquationException">Raised when the method is given invalid data</exception>
+        /// <exception cref="SyntaxException">Raised when a syntax error is detected in the equation</exception>
         private void SetFunction(List<INumericalYield> set, ref int index)
         {
             var opValue = set[index];
@@ -239,6 +251,8 @@ namespace MathEngine.Parsing
             set[index] = (INumericalYield)selectedConstructor.Invoke(parameters: constructorArguments);
         }
 
+        /// <exception cref="BadEquationException">Raised when the method is given invalid data</exception>
+        /// <exception cref="SyntaxException">Raised when a syntax error is detected in the equation</exception>
         private void SetOperation(List<INumericalYield> set, ref int index)
         {
             var opValue = set[index];
@@ -259,12 +273,22 @@ namespace MathEngine.Parsing
                 var arg = parameters[i];
                 if (arg.GetCustomAttribute<LeftAttribute>() != null)
                 {
+                    if (index == 0)
+                    {
+                        throw new SyntaxException($"Expected value before operator {operation.Symbol.Symbol}");
+                    }
+
                     arguments[i] = set[index - 1];
                     set.RemoveAt(index - 1);
                     index -= 1;
                 }
                 else if (arg.GetCustomAttribute<RightAttribute>() != null)
                 {
+                    if (index >= set.Count - 1)
+                    {
+                        throw new SyntaxException($"Expected value after operator {operation.Symbol.Symbol}");
+                    }
+
                     arguments[i] = set[index + 1];
                     set.RemoveAt(index + 1);
                 }
@@ -273,6 +297,31 @@ namespace MathEngine.Parsing
                     throw new BadEquationException($"Cannot formulate constructor for {operation.OperationType.Name}: Argument {arg.Name} is not tagged with LeftAttribute or RightAttribute");
                 }
             }
+
+            // Syntax error checking
+            for (int i = 0; i < arguments.Length; i++)
+            {
+                if (arguments[i] is UnresolvedObject unresolvedArgument)
+                {
+                    var first = "";
+                    var rest = "";
+
+                    if (arguments.Length >= 1)
+                    {
+                        first = arguments[0].ToString();
+                    }
+
+                    // For edge cases where a custom operator has multiple symbols
+                    // lump the rest to the right of the operator in the ex message
+                    if (arguments.Length > 1)
+                    {
+                        rest = string.Join(",", arguments.Skip(1));
+                    }
+
+                    throw new SyntaxException($"Syntax error for operation {operation.Symbol.Symbol}, value: \"{unresolvedArgument.Value}\". Near {first}{operation.Symbol.Symbol}{rest}");
+                }
+            }
+
 
             set[index] = (INumericalYield)Activator.CreateInstance(operation.OperationType, args: arguments);
         }
