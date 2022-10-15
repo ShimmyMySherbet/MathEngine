@@ -2,6 +2,12 @@
 
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0;net48;net5</TargetFrameworks>
+    <PackageId>ShimmyMySherbet.MathEngine</PackageId>
+    <Authors>ShimmyMySherbet</Authors>
+    <Description>A tool that can parse, build, and calculate math equations in string form. With support for variables/unknowns, syntax checking, functions and constants. Also supports custom operators and functions. Follows order of operations.</Description>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <RepositoryUrl>https://github.com/ShimmyMySherbet/MathEngine</RepositoryUrl>
+    <PackageTags>Math Equations Parsing Calculator</PackageTags>
   </PropertyGroup>
 
 </Project>
